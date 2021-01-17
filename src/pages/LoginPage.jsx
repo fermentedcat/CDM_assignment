@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { UserDataContext } from '../contexts/UserDataContext'
 
@@ -6,8 +6,14 @@ import { ButtonWarningStyled } from '../components/Buttons/ButtonWarningStyled'
 
 export default function LoginPage() {
     const [userInput, setUserInput] = useState(getStoredData)
-    const {setUserInfo, setLoggedIn} = useContext(UserDataContext)
+    const {setUserInfo, loggedIn, setLoggedIn} = useContext(UserDataContext)
     const history = useHistory()
+
+    useEffect(() => {
+        if (loggedIn) {
+            history.push("/home")
+        }
+    }, [loggedIn])
 
     function getStoredData() {
         const data = JSON.parse(localStorage.getItem("LOGIN"))

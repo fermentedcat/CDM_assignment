@@ -24,7 +24,6 @@ function App() {
 
   useEffect(() => {
     checkValidToken()
-    console.log("validating token");
   }, [])
 
  
@@ -56,14 +55,14 @@ function App() {
           <Header />
           <Switch>
 
-            <Route path="/log-in">
-              <LoginPage />
-            </Route>
-
             <Route path="/home" component={HomePage}/>
             <Route path="/customer/add" component={CustomerCreatePage} />
             <Route path="/customer/:id/edit" component={CustomerUpdatePage} />
             <Route path="/customer/:id" component={CustomerDetailPage} />
+
+            <Route path="/">
+              <LoginPage />
+            </Route>
 
           </Switch>
         </UserDataContext.Provider>

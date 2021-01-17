@@ -20,7 +20,7 @@ export default function Header() {
         setCustomers(null)
         setLoggedIn(false)
         localStorage.removeItem("TOKEN")
-        history.push("/log-in")
+        history.push("/")
     }
 
     useEffect(() => {

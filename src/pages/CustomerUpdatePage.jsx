@@ -7,7 +7,7 @@ import { ButtonWarningStyled } from '../components/Buttons/ButtonWarningStyled'
 
 
 export default function CustomerUpdate(props) {
-    const [customerData, setCustomerData] = useState()
+    const [formData, setFormData] = useState()
     const {customers, setCustomers} = useContext(UserDataContext)
     const customerId = props.match.params.id
     const history = useHistory()
@@ -15,7 +15,7 @@ export default function CustomerUpdate(props) {
     useEffect(() => {
         if (customers) {
             //* take customer data from stored object:
-            setCustomerData(customers[customers.findIndex(item => item.id == customerId)])
+            setFormData(customers[customers.findIndex(item => item.id == customerId)])
         } else {
             //* save new customer data from api:
             const url = `https://frebi.willandskill.eu/api/v1/customers/${customerId}/`
@@ -28,19 +28,19 @@ export default function CustomerUpdate(props) {
                 }
             })
             .then(res => res.json())
-            .then(data => setCustomerData(data))  
+            .then(data => setFormData(data))  
         }
     }, [])
 
     function handleOnSubmit(e) {
-        if (validateVat(customerData.vatNr)) {
+        if (validateVat(formData.vatNr)) {
             e.preventDefault()
             const url = `https://frebi.willandskill.eu/api/v1/customers/${customerId}/`
             const token = localStorage.getItem("TOKEN")
 
             fetch(url, {
                 method: "PUT",
-                body: JSON.stringify(customerData),
+                body: JSON.stringify(formData),
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -69,7 +69,7 @@ export default function CustomerUpdate(props) {
         let countryCode = (str[0] + str[1]).toUpperCase()
         let numbers = str.substring(2)
         let isNum = /^\d+$/.test(numbers)
-        setCustomerData({...customerData, vatNr: (countryCode + numbers)})
+        setFormData({...formData, vatNr: (countryCode + numbers)})
     
         return countryCode === "SE" && numbers.length === 10 && isNum
     }
@@ -83,10 +83,10 @@ export default function CustomerUpdate(props) {
                 <td className="pl-4">
                     <input 
                         type={type || "text"}
-                        value={customerData[name]}
+                        value={formData[name]}
                         name={name}
                         onChange={e => {
-                            setCustomerData({...customerData, [e.target.name]: e.target.value})
+                            setFormData({...formData, [e.target.name]: e.target.value})
                         }}
                         required
                     />
@@ -96,7 +96,7 @@ export default function CustomerUpdate(props) {
     }
     return (
         <div className="row justify-content-center">
-            {customerData ?
+            {formData ?
                 <form onSubmit={handleOnSubmit} className="col-6 rounded bg-light shadow p-4">
                     <h2 className="text-center">Edit customer info</h2>
                     <table className="mt-4 mb-4">
