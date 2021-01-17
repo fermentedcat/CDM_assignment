@@ -35,7 +35,7 @@ export default function CustomerList() {
                     return <CustomerListItem key={item.id} customerData={item} />
                 })
                 :
-                <p>Loading customers...</p>
+                <tr><td>Loading customers...</td></tr>
                 }
             </tbody>
         </table>
